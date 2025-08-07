@@ -8,9 +8,6 @@ public class PlayerController : MonoBehaviour
     public PlayerStateMachine Machine;
     public Rigidbody2D Rigid;
 
-    [Header("Player Setting")]
-    public float Speed;
-
     #region Test
     public bool TestPlayCheck;
     public void Update()
@@ -24,11 +21,11 @@ public class PlayerController : MonoBehaviour
     {
         if (isPlay)
         {
-            Rigid.linearVelocity = Vector2.right * Speed;
+            Machine.ChangeState(StateType.Play);
         }
         else
         {
-            Rigid.linearVelocity = Vector2.zero;
+            Machine.ChangeState(StateType.Pause);
         }
     }
     #endregion
@@ -37,21 +34,25 @@ public class PlayerController : MonoBehaviour
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.performed)
-        {
+        { 
+            // 2단 점프 방지 로직 필요
             Machine.ChangeState(StateType.Jump);
         }
     }
     public void OnAttackRed()
     {
-        Machine.ChangeState(StateType.AttackRed);
+        if (Machine.CanOtherAction())
+            Machine.ChangeState(StateType.AttackRed);
     }
     public void OnAttackGreen()
     {
-        Machine.ChangeState(StateType.AttackGreen);
+        if (Machine.CanOtherAction())
+            Machine.ChangeState(StateType.AttackGreen);
     }
     public void OnAttackBlue()
     {
-        Machine.ChangeState(StateType.AttackBlue);
+        if (Machine.CanOtherAction())
+            Machine.ChangeState(StateType.AttackBlue);
     }
     #endregion
 }

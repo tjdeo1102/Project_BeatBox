@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 
-public abstract class State
+public abstract class State: ScriptableObject
 {
     public StateType Type;
     protected PlayerController ctrl;

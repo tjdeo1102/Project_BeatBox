@@ -42,4 +42,12 @@ public class PlayerStateMachine : MonoBehaviour
         curState = stateDic[CurType];
         curState?.Enter();
     }
+
+    public bool CanOtherAction()
+    {
+        bool canAction = CurType == StateType.Pause
+                        || CurType == StateType.Play
+                        || CurType == StateType.Jump;
+        return canAction;
+    }
 }
