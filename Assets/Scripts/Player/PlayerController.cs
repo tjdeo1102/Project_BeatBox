@@ -6,11 +6,18 @@ public class PlayerController : MonoBehaviour
     [Header("Require Setting")]
     public PlayerInput Input;
     public PlayerStateMachine Machine;
+    public PlayerPhysics Physics;
+    public BackgroundShift BackgroundShift;
     public Rigidbody2D Rigid;
+
+    [Header("BlackBoard")]
+    public bool IsCombo = false;
+    public float ComboHitTimer = 0f;
+    public NoteGroup CurrentComboNote;
 
     #region Test
     public bool TestPlayCheck;
-    public void Update()
+    public void Start()
     {
         Play(TestPlayCheck);
     }
@@ -35,24 +42,47 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         { 
-            // 2단 점프 방지 로직 필요
             Machine.ChangeState(StateType.Jump);
         }
     }
-    public void OnAttackRed()
+    public void OnAttackRed(InputAction.CallbackContext context)
     {
-        if (Machine.CanOtherAction())
+        if (context.performed)
+        {
             Machine.ChangeState(StateType.AttackRed);
+        }
     }
-    public void OnAttackGreen()
+
+    public void OnAttackGreen(InputAction.CallbackContext context)
     {
-        if (Machine.CanOtherAction())
+        if (context.performed)
+        {
             Machine.ChangeState(StateType.AttackGreen);
+        }
     }
-    public void OnAttackBlue()
+
+    public void OnAttackBlue(InputAction.CallbackContext context)
     {
-        if (Machine.CanOtherAction())
+        if (context.performed)
+        {
             Machine.ChangeState(StateType.AttackBlue);
+        }
     }
+
+    //public void OnAttackRed()
+    //{
+    //    if (Machine.CanOtherAction())
+    //        Machine.ChangeState(StateType.AttackRed);
+    //}
+    //public void OnAttackGreen()
+    //{
+    //    if (Machine.CanOtherAction())
+    //        Machine.ChangeState(StateType.AttackGreen);
+    //}
+    //public void OnAttackBlue()
+    //{
+    //    if (Machine.CanOtherAction())
+    //        Machine.ChangeState(StateType.AttackBlue);
+    //}
     #endregion
 }
