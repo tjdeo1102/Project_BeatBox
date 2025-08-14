@@ -7,6 +7,7 @@ public class BackgroundShift : MonoBehaviour
     public SpriteRenderer background;
     public float colorDuration = 5f;
 
+    private Sequence m_seq;
     void Start()
     {
         background.material = new Material(background.material);
@@ -15,7 +16,7 @@ public class BackgroundShift : MonoBehaviour
 
     private void StartBackgroundColorSequence()
     {
-        Sequence seq = DOTween.Sequence();
+        m_seq = DOTween.Sequence();
 
         Color[] colors = new Color[]
         {
@@ -49,12 +50,12 @@ public class BackgroundShift : MonoBehaviour
             Color from = colors[i];
             Color to = colors[(i + 1) % colors.Length];
 
-            seq.AppendCallback(() =>
+            m_seq.AppendCallback(() =>
             {
                 background.color = from;
             });
 
-            seq.Join(DOTween.To(
+            m_seq.Join(DOTween.To(
                 () => background.color,
                 x => background.color = x,
                 to,
@@ -63,6 +64,14 @@ public class BackgroundShift : MonoBehaviour
 
         }
 
-        seq.SetLoops(-1); // ¹«ÇÑ ¹Ýº¹
+        m_seq.SetLoops(-1); // ë¬´í•œ ë°˜ë³µ
+    }
+
+    private void OnDestroy()
+    {
+        if (m_seq != null && m_seq.IsActive())
+            m_seq.Kill();
     }
 }
+
+
