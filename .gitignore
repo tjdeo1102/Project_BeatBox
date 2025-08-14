@@ -74,3 +74,12 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 /Assets/Plugins
+/Assets/Editor Default Resources
+/Assets/ExternalDependencyManager
+/Assets/AddressableAssetsData
+/Assets/Firebase
+/Assets/GeneratedLocalRepo
+/Assets/GoogleSignIn
+/Assets/PlayServicesResolver/Editor
+/Assets/Imports
+/Assets/StreamingAssets
