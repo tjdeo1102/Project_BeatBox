@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,8 +24,15 @@ public class ScoreMultiplier
 [Serializable]
 public class TileData
 {
-    public Vector2 position;
+    public Vector2Int position;
     public string tileName;
+}
+
+[Serializable]
+public class NoteData
+{
+    public Vector2 position;
+    public ColorType[] notes;
 }
 
 [CreateAssetMenu(fileName = "MapData", menuName = "Scriptable Objects/MapData")]
@@ -33,9 +40,8 @@ public class MapData : ScriptableObject
 {
     // 추후, RealtimeDB에 올라가며 수정될 내용들
 
-    public string ID;
+    public int ID;
     public string SongTitle;
-    public AudioClip Song;
     public float ScorePerPerfect;
     // 연속 히트로 없애는 박스인 경우, 연속 히트 인정 시간
     // HitWindow영향받음
@@ -43,4 +49,6 @@ public class MapData : ScriptableObject
     public HitWindow HitWindow;
     public ScoreMultiplier ScoreMultiplier;
     public List<TileData> Tiles;
+    public List<TileData> ConfinerTiles;
+    public List<NoteData> NoteGroups;
 }
