@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 [CreateAssetMenu(menuName = "States/Jump")]
 public class JumpState : State
@@ -18,6 +18,13 @@ public class JumpState : State
 
     public bool CanJump()
     {
-        return Physics2D.Raycast(ctrl.transform.position, -ctrl.transform.up, RaycastDistance, 1 << (int)LayerType.Ground);
+        return Physics2D.BoxCast(
+            ctrl.transform.position,   
+            Vector2.one,               
+            0f,                        
+            -ctrl.transform.up,        
+            RaycastDistance,           
+            1 << (int)LayerType.Ground
+        );
     }    
 }
