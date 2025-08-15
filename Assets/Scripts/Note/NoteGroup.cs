@@ -1,42 +1,58 @@
-﻿using DG.Tweening;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 [RequireComponent (typeof(Rigidbody2D))]
 public class NoteGroup : MonoBehaviour
 {
+    public List<ColorType> NoteList;
     public Queue<Note> Notes;
     public Vector2 MinNoteSize = Vector2.one;
     public Vector2 NoteDistance = Vector2.one;
     public MapManager Manager;
     public HitJudgeMode CurrentMode;
 
+    [Header("Gizmo")]
+    public SpriteRenderer Renderer;
+
     private float m_lastHitTime = 0f;
+    private Rigidbody2D m_rigid;
     private void Start()
     {
-        Init();
         Manager = MapManager.Instance;
     }
 
     public void Init()
     {
-        var notes = GetComponentsInChildren<Note>();
+        if (Renderer != null) Renderer.enabled = false;
+        m_rigid = GetComponent<Rigidbody2D>();
+        m_rigid.simulated = false;
 
-        transform.position += (Vector3)NoteDistance * (notes.Length - 1);
+        var notes = new List<Note>();
+        transform.position += (Vector3)NoteDistance / 2  * (NoteList.Count - 1);
 
-        for (int i = 0; i < notes.Length; i++)
+        for (int i = 0; i < NoteList.Count; i++)
         {
-            var n = notes[i];
+            GameObject obj;
+            obj = Addressables.InstantiateAsync(NoteList[i].ToString()).WaitForCompletion();
+            if (obj == null) return;
+
+            obj.transform.parent = transform;
+            obj.transform.position = transform.position;
+            var n = obj.GetComponent<Note>();
+            n.ColorType = NoteList[i];
             n.transform.localScale = (Vector3)(MinNoteSize + NoteDistance * i);
             n.Init(-i);
+            notes.Add(n);
         }
 
         Notes = new();
-        for (int i = notes.Length - 1; i >= 0; i--)
+        for (int i = NoteList.Count - 1; i >= 0; i--)
         {
             Notes.Enqueue(notes[i]);
         }
+
+        m_rigid.simulated = true;
     }
 
     public bool TryHit(ColorType type, float hitDistance, float attackDistance, out bool IsCombo)
