@@ -1,4 +1,4 @@
-﻿using DG.Tweening;
+using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,9 +11,7 @@ public class AttackState : State
     public override void Enter()
     {
         base.Enter();
-#if UNITY_EDITOR
-        Debug.DrawRay(ctrl.transform.position, Vector2.right * AttackDistance, Color.red, 10f);
-#endif
+
         if (ctrl.CurrentComboNote == null)
         {
             var hit = Physics2D.BoxCast(ctrl.transform.position, Vector2.one, 0f, Vector2.right, AttackDistance, 1 << (int)LayerType.Note);
@@ -47,7 +45,7 @@ public class AttackState : State
         {
             var note = ctrl.CurrentComboNote;
             ctrl.ComboHitTimer += Time.unscaledDeltaTime; // timeScale = 0에서도 진행
-            if (ctrl.ComboHitTimer >= MapManager.Instance.MapData.ComboHitTime * note.Notes.Count)
+            if (ctrl.ComboHitTimer >= SongManager.Instance.SongData.ComboHitTime * note.Notes.Count)
             {
                 // 타이머 종료 시 상태 전환
                 ComboHitEffect(false);

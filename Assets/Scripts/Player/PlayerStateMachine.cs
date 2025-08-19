@@ -1,7 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using Unity.IO.LowLevel.Unsafe;
-using UnityEditor;
 using UnityEngine;
 
 public class PlayerStateMachine : MonoBehaviour
@@ -23,7 +20,7 @@ public class PlayerStateMachine : MonoBehaviour
             stateDic[item.Type] = item;
         }
 
-        // ½ÃÀÛ »óÅÂ ¼¼ÆÃ
+        // ì‹œì‘ ìƒíƒœ ì„¸íŒ…
         if (stateDic.ContainsKey(StateType.Pause))
         {
             ChangeState(StateType.Pause);
