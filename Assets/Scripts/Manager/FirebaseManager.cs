@@ -3,19 +3,39 @@ using Firebase.Auth;
 using Google;
 using System.Threading.Tasks;
 using System.IO;
+using Firebase;
+using Firebase.Extensions;
+using Firebase.Database;
+using UnityEngine.AddressableAssets;
 
 public class FirebaseManager : ManagerBase<FirebaseManager>
 {
     private string googleAPI;
     private FirebaseAuth auth;
     private GoogleSignInConfiguration config;
-    private FirebaseUser currentUser;
+    public FirebaseUser CurrentUser;
+    public DatabaseReference DBRef;
 
     public override void StartInit()
     {
         base.StartInit();
-        googleAPI = Path.Combine(Application.streamingAssetsPath, "config.json");
-        auth = FirebaseAuth.DefaultInstance;
+        var textAsset = Addressables.LoadAssetAsync<TextAsset>("Config").WaitForCompletion();
+        var data = JsonUtility.FromJson<ConfigData>(textAsset.text);
+        googleAPI = data.GoogleWebClientId;
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
+        {
+            var dependencyStatus = task.Result;
+            if (dependencyStatus == DependencyStatus.Available)
+            {
+                Debug.Log("Firebase Ready");
+                auth = FirebaseAuth.DefaultInstance;
+                DBRef = FirebaseDatabase.DefaultInstance.RootReference;
+            }
+            else
+            {
+                Debug.LogError($"Error: {dependencyStatus}");
+            }
+        });
         config = new GoogleSignInConfiguration
         {
             WebClientId = googleAPI,
@@ -73,6 +93,10 @@ public class FirebaseManager : ManagerBase<FirebaseManager>
     /// </summary>
     private void SignInWithFirebase(Credential credential)
     {
+        if (auth == null)
+        {
+            Logout();
+        }
         auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
         {
             if (task.IsCanceled)
@@ -86,8 +110,10 @@ public class FirebaseManager : ManagerBase<FirebaseManager>
                 return;
             }
 
-            currentUser = task.Result;
-            Debug.Log($"[FirebaseLogin] 로그인 성공: {currentUser.DisplayName} / {currentUser.UserId}");
+            CurrentUser = task.Result;
+            SceneLoadManager.Instance.LoadScene((int)SceneIndex.Lobby);
+
+            Debug.Log($"[FirebaseLogin] 로그인 성공: {CurrentUser.DisplayName} / {CurrentUser.UserId}");
         });
     }
 
@@ -97,9 +123,9 @@ public class FirebaseManager : ManagerBase<FirebaseManager>
     public void Logout()
     {
         Debug.Log("[Logout] 로그아웃 시도");
-        auth.SignOut();
+        if (auth != null)  auth.SignOut();
         GoogleSignIn.DefaultInstance.SignOut();
-        currentUser = null;
+        CurrentUser = null;
     }
 
     /// <summary>
@@ -107,13 +133,13 @@ public class FirebaseManager : ManagerBase<FirebaseManager>
     /// </summary>
     public void RefreshToken()
     {
-        if (currentUser == null)
+        if (CurrentUser == null)
         {
             Debug.LogWarning("[RefreshToken] 현재 로그인된 유저 없음");
             return;
         }
 
-        currentUser.TokenAsync(true).ContinueWith(task =>
+        CurrentUser.TokenAsync(true).ContinueWith(task =>
         {
             if (task.IsCanceled || task.IsFaulted)
             {
@@ -123,13 +149,5 @@ public class FirebaseManager : ManagerBase<FirebaseManager>
             string newToken = task.Result;
             Debug.Log("[RefreshToken] 새 토큰 발급 완료: " + newToken);
         });
-    }
-
-    /// <summary>
-    /// 현재 로그인 유저 정보 가져오기
-    /// </summary>
-    public FirebaseUser GetCurrentUser()
-    {
-        return currentUser;
     }
 }

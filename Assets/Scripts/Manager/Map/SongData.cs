@@ -35,20 +35,25 @@ public class NoteData
     public ColorType[] notes;
 }
 
-[CreateAssetMenu(fileName = "MapData", menuName = "Scriptable Objects/MapData")]
-public class MapData : ScriptableObject
+[CreateAssetMenu(fileName = "SongData", menuName = "Scriptable Objects/SongData")]
+public class SongData : ScriptableObject
 {
     // 추후, RealtimeDB에 올라가며 수정될 내용들
 
     public int ID;
+    [Header("Song Setting")]
     public string SongTitle;
+    [Header("Hit Setting")]
     public float ScorePerPerfect;
     // 연속 히트로 없애는 박스인 경우, 연속 히트 인정 시간
     // HitWindow영향받음
     public float ComboHitTime = 0.2f;
     public HitWindow HitWindow;
     public ScoreMultiplier ScoreMultiplier;
+    [Header("Map Setting")]
     public List<TileData> Tiles;
     public List<TileData> ConfinerTiles;
     public List<NoteData> NoteGroups;
+    [Header("Player Setting")]
+    public Vector3 PlayerInitPos;
 }
