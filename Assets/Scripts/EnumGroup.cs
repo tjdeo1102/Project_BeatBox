@@ -1,4 +1,5 @@
 using System;
+using Unity.Behavior;
 
 public enum StateType
 {
@@ -23,3 +24,13 @@ public enum LayerType
     Ground = 9,
 }
 
+public enum SceneIndex
+{
+    Login, Loading, Lobby ,InGame, None
+}
+
+[BlackboardEnum]
+public enum BossState
+{
+    Idle, Attack, Die
+}
