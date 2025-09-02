@@ -6,18 +6,19 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/PrototypeLogin.unity
+    path: Assets/Scenes/Login.unity
     guid: ca33db83bccb394448825b50ea3f7df9
   - enabled: 1
-    path: Assets/Scenes/PrototypeLodding.unity
+    path: Assets/Scenes/Lodding.unity
     guid: 2ceb241304fc51d4a8f0195155c60320
   - enabled: 1
-    path: Assets/Scenes/PrototypeLobby.unity
-    guid: b9dde80dfb3fb0849b177e72d5b87d9c
+    path: Assets/Scenes/OtherLobby.unity
+    guid: 779be30347b5abe41bfbb27a303b0c93
   - enabled: 1
-    path: Assets/Scenes/PrototypeScene.unity
+    path: Assets/Scenes/InGame.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: a8709e751c3a818459b01eaec5b683d7, type: 2}
+    com.unity.dt.app-ui: {fileID: 11400000, guid: 99f9c9493070a9d4c979a8fec7c5a8d3, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
