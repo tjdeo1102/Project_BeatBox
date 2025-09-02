@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: PrototypeMapSheet_3
+  m_Name: IngameSheet2_13
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: -1305319752, guid: 8dfe760ad3d915b4897b10642bfe39e7, type: 3}
+  m_Sprite: {fileID: 88735523, guid: e5314310e4bd48040a5a62ef734cad9f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
